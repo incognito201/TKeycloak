@@ -20,10 +20,9 @@ services:
       - keycloak_network
 
   mysql:
-    container_name: db_mysql
     image: mysql:latest
     volumes:
-      - .docker/db/mysql:/var/lib/mysql
+      - mysql:/var/lib/mysql/data
     environment:
       - MYSQL_DB=TesteDb
       - MYSQL_USER=keycloak
