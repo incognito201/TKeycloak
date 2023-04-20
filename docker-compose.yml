@@ -2,30 +2,32 @@ version: '3'
 
 services:
   db:
-    container_name: db_mysql
     image: mysql:latest
+    restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=root_pwd
-      - MYSQL_USER=admin
-      - MYSQL_PASSWORD=pa55word
+      MYSQL_DATABASE: TesteDb
+      MYSQL_USER: keycloak
+      MYSQL_PASSWORD: pa55word
+      MYSQL_ROOT_PASSWORD: root_password # Senha do usuário root
     ports:
       - "3306:3306"
     volumes:
-      - .docker/db/mysql:/var/lib/mysql
+      - db_data:/var/lib/mysql
+      
   keycloak:
-    container_name: keycloak
-    image: quay.io/keycloak/keycloak:19.0.1
+    image: jboss/keycloak:latest
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
-      - KC_DB=mysql
-      - KC_DB_USERNAME=admin
-      - KC_DB_PASSWORD=pa55word
-      - KC_DB_URL_HOST=db
-      - KC_DB_URL_PORT=3306
-      - KC_DB_SCHEMA=keycloak
+      DB_VENDOR: MYSQL
+      DB_ADDR: db
+      DB_DATABASE: TesteDb
+      DB_USER: keycloak
+      DB_PASSWORD: pa55word
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin # Senha do usuário admin
     ports:
-      - 8080:8080
-    command: start-dev
+      - "8080:8080"
     depends_on:
       - db
+      
+volumes:
+  db_data:
