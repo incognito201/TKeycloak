@@ -14,9 +14,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - mysql
-      #mysql:
-      #  condition: service_healthy
+      mysql:
+        condition: service_healthy
     networks:
       - keycloak_network
 
@@ -29,8 +28,8 @@ services:
       - MYSQL_USER=keycloak
       - MYSQL_PASSWORD=pa55word
       - MYSQL_ROOT_PASSWORD=root_pwd
-    #healthcheck:
-    #  test: "exit 0"
+    healthcheck:
+      test: "exit 0"
     ports:
       - "3306:3306"
     networks:
@@ -39,4 +38,4 @@ volumes:
   mysql:
 networks:
   keycloak_network:
-    driver: local
+    driver: bridge
