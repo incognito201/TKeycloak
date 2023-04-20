@@ -1,34 +1,32 @@
 version: '3'
 
-services:
-  db:
-    image: mysql:latest
-    restart: always
-    environment:
-      MYSQL_DATABASE: TesteDb
-      MYSQL_USER: keycloak
-      MYSQL_PASSWORD: pa55word
-      MYSQL_ROOT_PASSWORD: root_password # Senha do usuário root
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-      
-  keycloak:
-    image: jboss/keycloak:19.0.1
-    environment:
-      DB_VENDOR: MYSQL
-      DB_ADDR: db
-      DB_DATABASE: TesteDb
-      DB_USER: keycloak
-      DB_PASSWORD: pa55word
-      KEYCLOAK_USER: admin
-      KEYCLOAK_PASSWORD: admin # Senha do usuário admin
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-      
 volumes:
-  db_data:
-    driver: local
+  mysql_data:
+      driver: local
+
+services:
+  mysql:
+      image: mysql:latest
+      volumes:
+        - mysql_data:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: keycloak
+        MYSQL_USER: keycloak
+        MYSQL_PASSWORD: password
+  keycloak:
+      image: quay.io/keycloak/keycloak:20.0.0
+      environment:
+        DB_VENDOR: MYSQL
+        DB_ADDR: mysql
+        DB_DATABASE: keycloak
+        DB_USER: keycloak
+        DB_PASSWORD: password
+        KEYCLOAK_USER: admin
+        KEYCLOAK_PASSWORD: Pa55w0rd
+        # Uncomment the line below if you want to specify JDBC parameters. The parameter below is just an example, and it shouldn't be used in production without knowledge. It is highly recommended that you read the MySQL JDBC driver documentation in order to use it.
+        #JDBC_PARAMS: "connectTimeout=30000"
+      ports:
+        - 8080:8080
+      depends_on:
+        - mysql
