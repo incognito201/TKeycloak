@@ -15,7 +15,7 @@ services:
       - db_data:/var/lib/mysql
       
   keycloak:
-    image: jboss/keycloak:latest
+    image: jboss/keycloak:19.0.1
     environment:
       DB_VENDOR: MYSQL
       DB_ADDR: db
