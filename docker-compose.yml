@@ -6,16 +6,18 @@ volumes:
 
 services:
   mysql:
-      image: mysql:latest
-      volumes:
-        - .docker/db/mysql:/var/lib/mysql
-      environment:
-        MYSQL_ROOT_PASSWORD: root_pwd
-        MYSQL_DATABASE: TesteDb
-        MYSQL_USER: keycloak
-        MYSQL_PASSWORD: pa55word
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_pwd
+      - MYSQL_DATABASE=TesteDb
+      - MYSQL_USER=keycloak
+      - MYSQL_PASSWORD=pa55word
+    ports:
+      - "3306:3306"
+    volumes:
+      - .docker/db/mysql:/var/lib/mysql
   keycloak:
-      image: quay.io/keycloak/keycloak:19.0.1
+      image: quay.io/keycloak/keycloak:20.0.0
       environment:
         DB_VENDOR: MYSQL
         DB_ADDR: mysql
