@@ -15,7 +15,7 @@ services:
         MYSQL_USER: keycloak
         MYSQL_PASSWORD: pa55word
   keycloak:
-      image: quay.io/keycloak/keycloak:20.0.0
+      image: quay.io/keycloak/keycloak:19.0.1
       environment:
         DB_VENDOR: MYSQL
         DB_ADDR: mysql
